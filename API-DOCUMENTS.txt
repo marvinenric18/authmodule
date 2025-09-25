@@ -1,0 +1,159 @@
+NOTE: ALL WEB APPLICATION RUNS IN TOMCAT SERVER 
+First I created authmodule application that uses Basic Token to Generate JWT Token.
+I assume 1 parking_lot = 1 capacity
+
+APPLICATION: authmodule
+1. LOGIN - GENERATE JWTOKEN
+URL: http://localhost:8080/authmodule/v1/login
+METHOD: POST
+AUTH: Basic dXNlcjoxMjM0
+HEADERS: 
+Content-Type: application/json
+BODY:
+{
+ "username":"admin123",
+ "password":"password123"
+}
+
+RESPONSE:
+{
+"message": "login_successfully",
+"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1ODcxNDY3OSwiZXhwIjoxNzU4NzE1NTc5fQ.OsUnkNNJjPpDKo9nzRDfQADm3NMdILdJc9GAPr3ErkY",
+"status": "success"
+}
+
+APPLICATION: parking-management
+
+
+2. LOT REGISTRATION
+URL: http://localhost:8080/parking-management/v1/lot-registration
+METHOD: POST
+AUTH: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1ODc2ODUxNCwicHdkIjoicGFzc3dvcmQxMjMiLCJleHAiOjE3NTg3OTczMTR9.PYil8_nLUEeF-D_byEmFJd6JxkJZCO6RVv3_KOk-dSU
+HEADERS: 
+Content-Type: application/json
+BODY:
+{
+ "lot_id":"LOT-A1",
+ "location":"makati",
+ "capacity":50,
+  "occupied_spaces":10,
+  "cost_per_minute":1
+}
+
+RESPONSE:
+{
+ "status":"success",
+ "message":"successfully_added"
+}
+
+
+3. VEHICLE REGISTRATION AND CHECKING IN
+URL: http://localhost:8080/parking-management/v1/check-in-vehicle-registration
+METHOD: POST
+AUTH: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1ODc2ODUxNCwicHdkIjoicGFzc3dvcmQxMjMiLCJleHAiOjE3NTg3OTczMTR9.PYil8_nLUEeF-D_byEmFJd6JxkJZCO6RVv3_KOk-dSU
+HEADERS: 
+Content-Type: application/json
+BODY:
+{
+  "license_plate": "ABC-123",
+  "type": "Car",
+  "owner_name": "John Doe",
+  "parking_lot_id":"LOT-A1"
+}
+RESPONSE:
+{
+ "status":"success",
+ "message":"successfully_added"
+}
+
+4. CHECK OUT VEHICLE 
+URL: http://localhost:8080/parking-management/v1/check-out-vehicle
+METHOD: POST
+AUTH: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1ODc2ODUxNCwicHdkIjoicGFzc3dvcmQxMjMiLCJleHAiOjE3NTg3OTczMTR9.PYil8_nLUEeF-D_byEmFJd6JxkJZCO6RVv3_KOk-dSU
+HEADERS: 
+Content-Type: application/json
+BODY:
+{
+  "parking_lot_id":"LOT-A1",
+  "license_plate": "ABC-123"
+}
+
+RESPONSE:
+{
+"message": "successfully_updated",
+"status": "success"
+}
+
+
+5. GET PARKING DETAILS (CAPACITY AND OCCUPIED SPACES
+URL: http://localhost:8080/parking-management/v1/get-parking-lot-details
+METHOD: POST
+AUTH: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1ODc2ODUxNCwicHdkIjoicGFzc3dvcmQxMjMiLCJleHAiOjE3NTg3OTczMTR9.PYil8_nLUEeF-D_byEmFJd6JxkJZCO6RVv3_KOk-dSU
+HEADERS: 
+Content-Type: application/json
+BODY:
+{
+ "lot_id":"LOT-A1"
+}
+
+RESPONSE:
+{
+"occupied_spaces": 10,
+"message": "record_found",
+"capacity": 50,
+"status": "success"
+}
+
+
+6. VIEWING ALL VEHICLE PARKED IN A LOT
+URL: http://localhost:8080/parking-management/v1/get-all-vehicle-parked
+METHOD: POST
+AUTH: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1ODc2ODUxNCwicHdkIjoicGFzc3dvcmQxMjMiLCJleHAiOjE3NTg3OTczMTR9.PYil8_nLUEeF-D_byEmFJd6JxkJZCO6RVv3_KOk-dSU
+HEADERS: 
+Content-Type: application/json
+BODY:
+{
+  "data_counts":10,
+   "page_number":1
+}
+
+RESPONSE:
+
+Body
+Pretty 
+{
+"result":[
+{
+"entry_time": 1758806410756,
+"owner_name": "Anna Doe",
+"license_plate": "DEF-456",
+"lot_id": "LOT-A1",
+"id": 2,
+"type": "CAR"
+},
+{
+"entry_time": 1758806381593,
+"owner_name": "John Doe",
+"license_plate": "ABC-123",
+"lot_id": "LOT-A1",
+"id": 1,
+"type": "CAR"
+}
+],
+"count": 2,
+"message": "record_found",
+"status": "success"
+}
+
+
+POSTMAN COLLETION:
+
+https://aquinomarvinenric-9997172.postman.co/workspace/marvin-enric-aquino's-Workspace~97a03369-efd3-4082-8f23-5e8146595313/collection/48785779-12caf8e4-20fd-4c72-a536-1ebe68a798c2?action=share&creator=48785779
+
+
+GITHUB LINKS
+
+You sent
+
+
+https://github.com/marvinenric18/parking-management/tree/master
